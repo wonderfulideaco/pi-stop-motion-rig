@@ -23,7 +23,7 @@ BUTTONS = {
 def frame_capture():
     ns = frame_get_numbers()
     n = max(ns) + 1 if len(ns) > 0 else 0
-    frame_name = "frames/frame_{n:04d}.jpg".format(n=n)
+    frame_name = 'frames/frame_{n:04d}.jpg'.format(n=n)
     CAMERA.capture(frame_name, use_video_port=True)
 
 
@@ -37,7 +37,7 @@ def frame_erase_last():
     ns = frame_get_numbers()
     if len(ns) > 0:
         n = max(ns)
-        fname = "frames/frame_{n:04d}.jpg".format(n=n)
+        fname = 'frames/frame_{n:04d}.jpg'.format(n=n)
         if os.path.exists(fname):
             os.remove(fname)
 
@@ -46,7 +46,7 @@ def frame_get_last(W, H):
     ns = frame_get_numbers()
     if len(ns) > 0:
         n = max(ns)
-        image = pygame.image.load("frames/frame_{n:04d}.jpg".format(n=n))
+        image = pygame.image.load('frames/frame_{n:04d}.jpg'.format(n=n))
         image = pygame.transform.scale(image, (W, H))
     else:
         image = pygame.Surface((W, H))
@@ -56,17 +56,17 @@ def frame_get_last(W, H):
 
 def frame_get_numbers():
     ns = []
-    pattern = re.compile(r"frames\/frame\_(?P<num>\d+)\.jpg")
-    for frame in glob.glob("frames/frame*.jpg"):
+    pattern = re.compile(r'frames\/frame\_(?P<num>\d+)\.jpg')
+    for frame in glob.glob('frames/frame*.jpg'):
         m = re.match(pattern, frame)
         if m is not None:
-            n = int(m.group("num"))
+            n = int(m.group('num'))
             ns.append(n)
     return sorted(ns)
 
 
 def frames_delete():
-    for frame in glob.glob("frames/frame*.jpg"):
+    for frame in glob.glob('frames/frame*.jpg'):
         os.remove(frame)
     return 0
 
@@ -76,17 +76,14 @@ def get_pressed_buttons():
 
 
 def movie_make(name, fps):
-    name = name.replace(" ", "_")
+    name = name.replace(' ', '_')
     ns = frame_get_numbers()
     if len(ns) > 0:
         now = dt.datetime.now()
-        movie_name = "movies/movie_{name:s}_{year:04d}{month:02d}{day:02d}_{hour:02d}{minute:02d}.mp4".format(
-            day=now.day,
+        movie_name = 'movies/movie_{name:s}_{hour:02d}{minute:02d}.mp4'.format(
             hour=now.hour,
             minute=now.minute,
-            month=now.month,
             name=name,
-            year=now.year,
         )
         command = "ffmpeg -r {fps:d} -pattern_type glob -i 'frames/*.jpg' -c:v libx264 {movie_name:s}".format(fps=fps, movie_name=movie_name)
         os.system(command)
@@ -98,13 +95,20 @@ def quit(camera):
     sys.exit(0)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
+    # Ensure frames and movies directories exist.
+    repodir = os.path.split(os.path.split(os.path.abspath(__file__))[0])[0]
+    for dirname in ('frames', 'movies'):
+        absdir = os.path.join(repodir, dirname)
+        if not os.path.exists(absdir):
+            os.mkdir(absdir)
+
     # Initialize.
     FPS = 10
-    FPS_MOVIE= 5
+    FPS_MOVIE = 5
     pygame.init()
     W, H = pygame.display.list_modes()[0]
-    print("Resolution: ({W}, {H}).".format(W=W, H=H))
+    print('Resolution: ({W}, {H}).'.format(W=W, H=H))
     SCREEN = pygame.display.set_mode([W, H])
     pygame.mouse.set_visible = False
     pygame.display.toggle_fullscreen()
@@ -128,7 +132,7 @@ if __name__ == "__main__":
             CAMERA.stop_preview()
             ns = frame_get_numbers()
             for n in ns:
-                anim = pygame.image.load("frames/frame_{n:04d}.jpg".format(n=n))
+                anim = pygame.image.load('frames/frame_{n:04d}.jpg'.format(n=n))
                 SCREEN.blit(anim, (0, 0))
                 CLOCK.tick(FPS)
                 pygame.display.flip()

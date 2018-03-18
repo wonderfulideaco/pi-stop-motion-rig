@@ -15,7 +15,7 @@ class TextInput:
         self,
         antialias=True,
         cursor_color=(0, 0, 1),
-        font_family = '',
+        font_family='',
         font_size=35,
         repeat_keys_initial_ms=400,
         repeat_keys_interval_ms=35,
@@ -26,7 +26,8 @@ class TextInput:
         self.text_color = text_color
         self.font_size = font_size
         self.input_string = ''
-        if not os.path.isfile(font_family): font_family = pygame.font.match_font(font_family)
+        if not os.path.isfile(font_family):
+            font_family = pygame.font.match_font(font_family)
         self.font_object = pygame.font.Font(font_family, font_size)
 
         self.surface = pygame.Surface((1, 1))
@@ -36,7 +37,7 @@ class TextInput:
         self.keyrepeat_intial_interval_ms = repeat_keys_initial_ms
         self.keyrepeat_interval_ms = repeat_keys_interval_ms
 
-        self.cursor_surface = pygame.Surface((int(self.font_size/20+1), self.font_size))
+        self.cursor_surface = pygame.Surface((int(self.font_size / 20 + 1), self.font_size))
         self.cursor_surface.fill(cursor_color)
         self.cursor_position = 0
         self.cursor_visible = True
@@ -50,17 +51,17 @@ class TextInput:
             if event.type == pygame.KEYDOWN:
                 self.cursor_visible = True
 
-                if not event.key in self.keyrepeat_counters:
+                if event.key not in self.keyrepeat_counters:
                     self.keyrepeat_counters[event.key] = [0, event.unicode]
 
                 if event.key == pl.K_BACKSPACE:
                     self.input_string = self.input_string[:max(self.cursor_position - 1, 0)] + \
-                                        self.input_string[self.cursor_position:]
+                        self.input_string[self.cursor_position:]
 
                     self.cursor_position = max(self.cursor_position - 1, 0)
                 elif event.key == pl.K_DELETE:
                     self.input_string = self.input_string[:self.cursor_position] + \
-                                        self.input_string[self.cursor_position + 1:]
+                        self.input_string[self.cursor_position + 1:]
 
                 elif event.key == pl.K_RETURN:
                     return True
@@ -79,19 +80,19 @@ class TextInput:
 
                 else:
                     self.input_string = self.input_string[:self.cursor_position] + \
-                                        event.unicode + \
-                                        self.input_string[self.cursor_position:]
+                        event.unicode + \
+                        self.input_string[self.cursor_position:]
                     self.cursor_position += len(event.unicode)
 
             elif event.type == pl.KEYUP:
                 if event.key in self.keyrepeat_counters:
                     del self.keyrepeat_counters[event.key]
 
-        for key in self.keyrepeat_counters :
+        for key in self.keyrepeat_counters:
             self.keyrepeat_counters[key][0] += self.clock.get_time()
             if self.keyrepeat_counters[key][0] >= self.keyrepeat_intial_interval_ms:
                 self.keyrepeat_counters[key][0] = self.keyrepeat_intial_interval_ms - \
-                                                    self.keyrepeat_interval_ms
+                    self.keyrepeat_interval_ms
 
                 event_key, event_unicode = key, self.keyrepeat_counters[key][1]
                 pygame.event.post(pygame.event.Event(pl.KEYDOWN, key=event_key, unicode=event_unicode))
