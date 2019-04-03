@@ -6,7 +6,6 @@ import textinput
 import re
 import sys
 
-
 from gpiozero import Button
 from picamera import PiCamera
 
@@ -149,13 +148,13 @@ if __name__ == '__main__':
             frame_display_ghost(W, H)
         # Make and save movie.
         elif pressed == {6}:
-            textinput = textinput.TextInput(antialias=False)
+            text_input = textinput.TextInput(antialias=False)
             while True:
                 SCREEN.fill((225, 225, 225))
                 events = pygame.event.get()
-                SCREEN.blit(textinput.get_surface(), (10, 10))
-                if textinput.update(events):
-                    movie_name = textinput.get_text()
+                SCREEN.blit(text_input.get_surface(), (10, 10))
+                if text_input.update(events):
+                    movie_name = text_input.get_text()
                     break
                 pygame.display.update()
                 CLOCK.tick(FPS)
