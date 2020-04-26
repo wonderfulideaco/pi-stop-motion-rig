@@ -11,4 +11,4 @@ Python code for a Raspberry Pi powered rig that allows stop motion animations to
 
 ## More Information 
 Instructables on how to set up the station - https://www.instructables.com/id/Raspberry-Pi-Stop-Motion-Animation-Rig/
-Notion page for Tiff's updates (4/26/2020) - https://www.notion.so/Wonderful-Idea-Co-Animation-Station-6d96c9e342f64038beea19c1f99a9954
+Notion for updates (4/26/2020) - https://www.notion.so/Wonderful-Idea-Co-Animation-Station-6d96c9e342f64038beea19c1f99a9954
